@@ -1,6 +1,7 @@
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
+import 'firebase/firestore';
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -24,6 +25,9 @@ class Firebase {
 
     this.auth = app.auth();
     this.db = app.database();
+    this.firestore = app.firestore();
+    const settings = {/* your settings... */ timestampsInSnapshots: true};
+    this.firestore.settings(settings);
 
     /* Social Sign In Method Provider */
 
@@ -67,10 +71,11 @@ class Firebase {
     this.auth.onAuthStateChanged(authUser => {
       if (authUser) {
         this.user(authUser.uid)
-          .once('value')
-          .then(snapshot => {
-            const dbUser = snapshot.val();
+          .onSnapshot(doc => {
+            console.log('onSnapshot', doc.data());
+            const dbUser = doc.data();
 
+            if (dbUser)
             // default empty roles
             if (!dbUser.roles) {
               dbUser.roles = [];
@@ -94,15 +99,19 @@ class Firebase {
 
   // *** User API ***
 
-  user = uid => this.db.ref(`users/${uid}`);
+  //user = uid => this.db.ref(`users/${uid}`);
+  user = uid => this.firestore.collection(`users`).doc(uid);
 
-  users = () => this.db.ref('users');
+  // users = () => this.db.ref('users');
+  users = () => this.firestore.collection('users');
 
   // *** Message API ***
 
-  message = uid => this.db.ref(`messages/${uid}`);
-
-  messages = () => this.db.ref('messages');
+  //  message = uid => this.db.ref(`messages/${uid}`);
+  message = uid => this.firestore.collection('messages').doc(uid);
+  
+  //  messages = () => this.db.ref('messages');
+  messages = () => this.firestore.collection('messages');
 }
 
 export default Firebase;

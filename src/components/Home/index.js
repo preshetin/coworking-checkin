@@ -8,9 +8,20 @@ import Messages from '../Messages';
 
 class HomePage extends Component {
   componentDidMount() {
-    this.props.firebase.users().on('value', snapshot => {
-      this.props.onSetUsers(snapshot.val());
-    });
+    this.props.firebase.users().get().then( querySnapshot => {
+      const result = [];
+      querySnapshot.forEach(doc => {
+        result.push({
+          ...doc.data(),
+          id: doc.id
+        });
+      });
+      this.props.onSetUsers(result);
+    })
+
+    //   this.props.firebase.users().on('value', snapshot => {
+    //     this.props.onSetUsers(snapshot.val());
+    //   });
   }
 
   componentWillUnmount() {
@@ -18,12 +29,19 @@ class HomePage extends Component {
   }
 
   render() {
+    if (this.props.users === null) {
+      return null;
+    }
+
     return (
       <div>
         <h1>Home Page</h1>
         <p>The Home Page is accessible by every signed in user.</p>
 
-        <Messages users={this.props.users} />
+        {this.props.users.map(user => {
+          return <p key={user.id}>{user.id}</p>
+        })}
+
       </div>
     );
   }
