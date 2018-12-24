@@ -17,7 +17,6 @@ class Messages extends Component {
 
   componentDidMount() {
     this.onListenForMessages();
-    console.log('unsubscribe', this.unsubscribe);
   }
 
   onListenForMessages = () => {
@@ -26,14 +25,13 @@ class Messages extends Component {
     this.unsubscribe = this.props.firebase
       .messages()
       .orderBy('createdAt', 'desc')
-      .limit(5)
+      .limit(this.props.limit)
       .onSnapshot(snapshot => {
         if (snapshot.size) {
-          let messages = [];
+          let messages = {};
           snapshot.forEach(doc =>
-            messages.push({ ...doc.data(), uid: doc.id }),
+            messages[doc.id] = { ...doc.data(), uid: doc.id }
           );
-
           this.props.onSetMessages(messages);
           this.setState({ loading: false });
 
@@ -42,6 +40,12 @@ class Messages extends Component {
         }
       });
   };
+
+  componentDidUpdate(props) {
+    if (props.limit !== this.props.limit) {
+      this.onListenForMessages();
+    }
+  }
 
   componentWillUnmount() {
     this.unsubscribe();
@@ -82,8 +86,6 @@ class Messages extends Component {
   render() {
     const { users, messages } = this.props;
     const { text, loading } = this.state;
-
-    console.log('messages', users, messages);
 
     return (
       <div>
