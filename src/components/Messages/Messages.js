@@ -16,33 +16,35 @@ class Messages extends Component {
   }
 
   componentDidMount() {
-    if (!this.props.messages.length) {
-      this.setState({ loading: true });
-    }
-
     this.onListenForMessages();
-  }
-
-  componentDidUpdate(props) {
-    if (props.limit !== this.props.limit) {
-      this.onListenForMessages();
-    }
+    console.log('unsubscribe', this.unsubscribe);
   }
 
   onListenForMessages = () => {
-    this.props.firebase
-      .messages()
-      .orderByChild('createdAt')
-      .limitToLast(this.props.limit)
-      .on('value', snapshot => {
-        this.props.onSetMessages(snapshot.val());
+    this.setState({ loading: true });
 
-        this.setState({ loading: false });
+    this.unsubscribe = this.props.firebase
+      .messages()
+      .orderBy('createdAt', 'desc')
+      .limit(5)
+      .onSnapshot(snapshot => {
+        if (snapshot.size) {
+          let messages = [];
+          snapshot.forEach(doc =>
+            messages.push({ ...doc.data(), uid: doc.id }),
+          );
+
+          this.props.onSetMessages(messages);
+          this.setState({ loading: false });
+
+        } else {
+          this.setState({ loading: false });
+        }
       });
   };
 
   componentWillUnmount() {
-    this.props.firebase.messages().off();
+    this.unsubscribe();
   }
 
   onChangeText = event => {
@@ -50,10 +52,10 @@ class Messages extends Component {
   };
 
   onCreateMessage = (event, authUser) => {
-    this.props.firebase.messages().push({
+    this.props.firebase.messages().add({
       text: this.state.text,
       userId: authUser.uid,
-      createdAt: this.props.firebase.serverValue.TIMESTAMP,
+      createdAt: new Date() 
     });
 
     this.setState({ text: '' });
@@ -70,7 +72,7 @@ class Messages extends Component {
   };
 
   onRemoveMessage = uid => {
-    this.props.firebase.message(uid).remove();
+    this.props.firebase.message(uid).delete();
   };
 
   onNextPage = () => {
@@ -80,6 +82,8 @@ class Messages extends Component {
   render() {
     const { users, messages } = this.props;
     const { text, loading } = this.state;
+
+    console.log('messages', users, messages);
 
     return (
       <div>

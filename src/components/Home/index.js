@@ -7,25 +7,19 @@ import { withFirebase } from '../Firebase';
 import Messages from '../Messages';
 
 class HomePage extends Component {
-  componentDidMount() {
-    this.props.firebase.users().get().then( querySnapshot => {
-      const result = [];
-      querySnapshot.forEach(doc => {
-        result.push({
-          ...doc.data(),
-          id: doc.id
-        });
-      });
-      this.props.onSetUsers(result);
-    })
 
-    //   this.props.firebase.users().on('value', snapshot => {
-    //     this.props.onSetUsers(snapshot.val());
-    //   });
+  componentDidMount() {
+    this.unsubscribe = this.props.firebase
+      .users()
+      .onSnapshot(snapshot => {
+        let users = {};
+        snapshot.forEach(doc => (users[doc.id] = doc.data()));
+        this.props.onSetUsers(users);
+      });
   }
 
   componentWillUnmount() {
-    this.props.firebase.users().off();
+    this.unsubscribe();
   }
 
   render() {
@@ -38,9 +32,7 @@ class HomePage extends Component {
         <h1>Home Page</h1>
         <p>The Home Page is accessible by every signed in user.</p>
 
-        {this.props.users.map(user => {
-          return <p key={user.id}>{user.id}</p>
-        })}
+        <Messages users={this.props.users} />
 
       </div>
     );

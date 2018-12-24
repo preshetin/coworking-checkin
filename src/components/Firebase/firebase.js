@@ -71,11 +71,10 @@ class Firebase {
     this.auth.onAuthStateChanged(authUser => {
       if (authUser) {
         this.user(authUser.uid)
-          .onSnapshot(doc => {
-            console.log('onSnapshot', doc.data());
-            const dbUser = doc.data();
+          .get()
+          .then(snapshot => {
+            const dbUser = snapshot.data();
 
-            if (dbUser)
             // default empty roles
             if (!dbUser.roles) {
               dbUser.roles = [];
