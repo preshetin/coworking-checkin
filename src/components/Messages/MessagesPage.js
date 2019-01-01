@@ -6,7 +6,7 @@ import { withAuthorization, withEmailVerification } from '../Session';
 import { withFirebase } from '../Firebase';
 import Messages from '../Messages';
 
-class HomePage extends Component {
+class MessagesPage extends Component {
 
   componentDidMount() {
     this.unsubscribe = this.props.firebase
@@ -29,16 +29,10 @@ class HomePage extends Component {
 
     return (
       <div>
-        <h1>Home Page</h1>
-        <p>The Home Page is accessible by every signed in user.</p>
+        <h1>Messages Page</h1>
+        <p>The Messages Page is accessible by every signed in user.</p>
 
-        <h2> Коворкают сейчас </h2>
-        <ul>
-          <li> one	</li>
-          <li> two	</li>
-          	
-        </ul>
-
+        <Messages users={this.props.users} />
 
       </div>
     );
@@ -63,4 +57,4 @@ export default compose(
   ),
   withEmailVerification,
   withAuthorization(condition),
-)(HomePage);
+)(MessagesPage);
