@@ -111,6 +111,15 @@ class Firebase {
   
   //  messages = () => this.db.ref('messages');
   messages = () => this.firestore.collection('messages');
+  
+  // *** Ticket API ***
+
+  ticket = uid => this.firestore.collection('tickets').doc(uid);
+  
+  tickets = () => this.firestore.collection('tickets');
+
+  ticketsForUser = (uid) => this.firestore.collection('tickets')
+    .where('userId', '==', uid);
 }
 
 export default Firebase;

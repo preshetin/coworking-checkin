@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { selectTickets } from '../../reducers/tickets';
+import TicketsList from '../Tickets/TicketsList';
+import { setTickets } from '../../actions/ticketActions';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
@@ -9,12 +12,15 @@ import Messages from '../Messages';
 class HomePage extends Component {
 
   componentDidMount() {
+
+    const uid = this.props.authUser.uid;
+
     this.unsubscribe = this.props.firebase
-      .users()
+      .ticketsForUser(uid)
       .onSnapshot(snapshot => {
-        let users = {};
-        snapshot.forEach(doc => (users[doc.id] = doc.data()));
-        this.props.onSetUsers(users);
+        let tickets = {};
+        snapshot.forEach(doc => (tickets[doc.id] = doc.data()));
+        this.props.onSetTickets(tickets);
       });
   }
 
@@ -23,21 +29,47 @@ class HomePage extends Component {
   }
 
   render() {
-    if (this.props.users === null) {
+
+    const { tickets } = this.props;
+    console.log('tickets', tickets);
+
+    if (this.props.tickets === null) {
       return null;
     }
 
     return (
-      <div>
-        <h1>Home Page</h1>
-        <p>The Home Page is accessible by every signed in user.</p>
+      <div className="container">
 
-        <h2> Коворкают сейчас </h2>
-        <ul>
-          <li> one	</li>
-          <li> two	</li>
-          	
-        </ul>
+<div class="dropdown is-hoverable">
+  <div class="dropdown-trigger">
+    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
+      <span>Добавить билет</span>
+      <span class="icon is-small">
+        <i class="fas fa-angle-down" aria-hidden="true"></i>
+      </span>
+    </button>
+  </div>
+  <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+    <div class="dropdown-content">
+      <a href="#" class="dropdown-item">
+        Одноразовый билет 
+      </a>
+      <a class="dropdown-item">
+        Многоразовый билет 
+      </a>
+    </div>
+  </div>
+</div>
+<br />
+<br />
+        <div className="columns">
+          <div className="column">
+            <TicketsList tickets={tickets} />
+          </div>
+          <div className="column">
+            <h1 className="title"> Недавние посещения </h1>
+          </div>
+        </div>
 
 
       </div>
@@ -46,11 +78,11 @@ class HomePage extends Component {
 }
 
 const mapStateToProps = state => ({
-  users: state.userState.users,
+  tickets: selectTickets(state.tickets),
 });
 
 const mapDispatchToProps = dispatch => ({
-  onSetUsers: users => dispatch({ type: 'USERS_SET', users }),
+  onSetTickets: tickets => dispatch(setTickets(tickets)),
 });
 
 const condition = authUser => !!authUser;
