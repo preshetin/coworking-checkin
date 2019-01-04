@@ -120,6 +120,21 @@ class Firebase {
 
   ticketsForUser = (uid) => this.firestore.collection('tickets')
     .where('userId', '==', uid);
+
+  // *** Visit API ***
+
+  visit = uid => this.firestore.collection('visits').doc(uid);
+  
+  visits = () => this.firestore.collection('visits');
+
+  visitsForUser = (uid) => this.firestore.collection('visits')
+    .where('userId', '==', uid);
+
+  createVisit = visit => this.firestore.collection('visits').add(visit);
+
+  checkoutVisit = (uid, endAt) => this.firestore.collection('visits')
+    .doc(uid).set({ endAt }, { merge: true })
+
 }
 
 export default Firebase;

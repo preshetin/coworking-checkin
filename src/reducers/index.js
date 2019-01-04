@@ -3,12 +3,14 @@ import sessionReducer from './session';
 import userReducer from './user';
 import messageReducer from './message';
 import tickets from './tickets';
+import visits from './visits';
 
 const rootReducer = combineReducers({
   sessionState: sessionReducer,
   userState: userReducer,
   messageState: messageReducer,
-  tickets
+  tickets,
+  visits
 });
 
 export default rootReducer;
