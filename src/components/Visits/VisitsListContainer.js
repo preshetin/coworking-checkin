@@ -28,7 +28,11 @@ class VisitsListContainer extends React.Component {
       .onSnapshot(snapshot => {
         console.log('snapshot', snapshot);
         let visits = {};
-        snapshot.forEach(doc => (visits[doc.id] = doc.data()));
+        snapshot.forEach(doc => (visits[doc.id] = {
+          ...doc.data(),
+          // startAt: doc.data().startAt.seconds,
+          // endAt: doc.data().endAt.seconds
+        }));
         this.props.onSetVisits(visits);
       });
   }
@@ -43,9 +47,7 @@ class VisitsListContainer extends React.Component {
 
   handleDoCheckout = visit => {
     const { firebase } = this.props;
-    console.log('handleDoCheckout', visit)
-    firebase.checkoutVisit(visit.uid, visit.endAt);
-    this.handleCheckoutCancel();
+    firebase.checkoutVisit(visit).then( () => this.handleCheckoutCancel() );
   }
 
   handleCheckoutCancel = () => (
@@ -81,7 +83,8 @@ class VisitsListContainer extends React.Component {
 
 const mapStateToProps = state => ({
   currentVisits: selectVisits(state.visits).filter(visit => !visit.hasOwnProperty('endAt')),
-  pastVisits: selectVisits(state.visits).filter(visit => visit.hasOwnProperty('endAt')),
+  pastVisits: selectVisits(state.visits).filter(visit => visit.hasOwnProperty('endAt'))
+    .sort((a,b) => b.endAt.seconds - a.endAt.seconds),
 });
 
 const mapDispatchToProps = dispatch => ({

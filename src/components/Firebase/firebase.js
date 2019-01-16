@@ -121,6 +121,17 @@ class Firebase {
   ticketsForUser = (uid) => this.firestore.collection('tickets')
     .where('userId', '==', uid);
 
+  ticketWithVisit = visitId => {
+    return this.firestore.collection('tickets')
+      .where('visitId', '==', visitId).get().then(querySnapshot => {
+        if (querySnapshot.docs.length) {
+          return querySnapshot.docs[0];
+        } else {
+          return null;
+        }
+      });
+  }
+
   // *** Visit API ***
 
   visit = uid => this.firestore.collection('visits').doc(uid);
@@ -132,8 +143,21 @@ class Firebase {
 
   createVisit = visit => this.firestore.collection('visits').add(visit);
 
-  checkoutVisit = (uid, endAt) => this.firestore.collection('visits')
-    .doc(uid).set({ endAt }, { merge: true })
+  checkoutVisit = (visit) => {
+    return this.ticketWithVisit(visit.uid).then(ticketSnapshot => {
+      if ( ticketSnapshot) {
+        return this.ticket(ticketSnapshot.id).set({
+          visitId: null
+        }, { merge: true }).then( () => {
+          return this.firestore.collection('visits')
+              .doc(visit.uid).set({ endAt: visit.endAt }, { merge: true })
+        })
+      } else {
+        return this.firestore.collection('visits')
+            .doc(visit.uid).set({ endAt: visit.endAt }, { merge: true })
+      }
+    })
+  }
 
 }
 

@@ -1,19 +1,7 @@
 import React from 'react';
+import { getHumanReadableDuration } from '../../utils';
 import moment from 'moment';
 
-const getHumanReadable = duration => {
-  var hours = parseInt(duration.asHours());
-  var minutes = parseInt(duration.asMinutes())%60;
-  var seconds = parseInt(duration.seconds());
-  if (hours === 0 && minutes === 0) {
-    return `${seconds} sec`;
-    return 'less than a minute';
-  }
-  if (hours === 0) {
-    return `${minutes} min ${seconds} sec`;
-  }
-  return `${hours} h ${minutes} min ${seconds} sec`;
-}
 
 class Timer extends React.Component {
 
@@ -45,7 +33,7 @@ class Timer extends React.Component {
       
     const duration = moment.duration(parseInt(seconds), 'seconds');
 
-    return <b>{getHumanReadable(duration)}</b>;
+    return <b>{getHumanReadableDuration(duration)}</b>;
   }
 };
 
