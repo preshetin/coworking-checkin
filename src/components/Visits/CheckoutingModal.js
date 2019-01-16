@@ -3,7 +3,6 @@ import moment from 'moment';
 
 const CheckoutingModal = ({ visit, onDoCheckout, onCheckoutCancel }) => {
 
-
   const endAt = new Date();
 
   console.log('modal visit', visit);

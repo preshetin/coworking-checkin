@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import VisitsListContainer from '../Visits';
+import VisitsListContainer from '../Visits/VisitsListContainer';
 import VisitCreator from '../Visits/VisitCreator';
 
 class HomePage extends Component {
