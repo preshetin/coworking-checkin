@@ -69,7 +69,7 @@ class VisitCreator extends React.Component {
       <div>
       { !isEditMode && 
           <a href="#" onClick={this.handleCreateOnetime} className="button is-primary is-medium">
-            <i class="fas fa-plus"></i>
+            <i className="fas fa-plus"></i>
           </a> }
         { this.state.isEditMode
             && <input
