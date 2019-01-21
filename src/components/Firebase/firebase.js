@@ -132,6 +132,13 @@ class Firebase {
       });
   }
 
+  // *** Visitors API **
+
+  visitorsForUser = uid => this.firestore.collection('visitors')
+    .where('userId', '==', uid);
+
+  visitor = id => this.firestore.collection('visitors').doc(id);
+
   // *** Visit API ***
 
   visit = uid => this.firestore.collection('visits').doc(uid);

@@ -1,18 +1,17 @@
 import React, { Component } from 'react'
+import VisitorsListContainer from './VisitorsListContainer';
 
 export default class VisitorsPage extends Component {
 
-  componentDidMount() {
-    // this.unsubscribe = this.props.firebase
-
-  }
     
 
   render() {
     return (
       <div>
         VisitorsPage 
+        <VisitorsListContainer />
       </div>
     )
   }
 }
+
