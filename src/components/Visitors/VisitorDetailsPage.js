@@ -1,5 +1,6 @@
 import React from 'react';
 import BackButton from '../common/BackButton';
+import EditForm from './EditForm';
 import {selectVisitor} from '../../reducers/visitors';
 import { setVisitor } from '../../actions/visitorActions';
 import { connect } from 'react-redux';
@@ -26,17 +27,16 @@ class VisitorDetailsPage extends React.Component {
     const {visitor} = this.props;
 
     if (visitor === undefined) {
-      return <h1 class="title">Loading...</h1>;
+      return <h1 className="title">Loading...</h1>;
     }
 
     return (
-      <div>
-        <BackButton />
-        <h1 class="title">
-          {'Edit ' + id}
-        </h1>
-        <br />
-        {visitor.firstName}
+      <div class="columns">
+        <div class="column is-half">
+          <BackButton />
+          <h1 className="title"> {'Edit ' + id} </h1>
+          <EditForm id={id}  visitor={visitor} />
+        </div>
       </div>
     );
   }

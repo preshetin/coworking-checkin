@@ -8,8 +8,8 @@ export default class VisitorsPage extends Component {
   render() {
     return (
       <div>
-        <div class="title">
-          Visitors <Link to={VISITOR_CREATE} class="button">Create</Link>
+        <div className="title">
+          Visitors <Link to={VISITOR_CREATE} className="button">Create</Link>
         </div>
         
         <VisitorsListContainer />

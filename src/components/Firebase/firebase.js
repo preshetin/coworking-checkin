@@ -139,6 +139,9 @@ class Firebase {
 
   visitor = id => this.firestore.collection('visitors').doc(id);
 
+  updateVisitor = ( id, visitor ) => this.firestore.collection('visitors')
+    .doc(id).set(visitor, { merge: true });
+
   // *** Visit API ***
 
   visit = uid => this.firestore.collection('visits').doc(uid);
