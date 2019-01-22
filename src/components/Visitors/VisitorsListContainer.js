@@ -27,7 +27,11 @@ class VisitorsListContainer extends React.Component {
 
   render() {
     const visitors = this.props.visitors;
-    return visitors.map((visitor, id) => <VisitorRow key={id} visitor={visitor}/>);
+    return (
+      <div class="container">
+        {visitors.map((visitor, id) => <VisitorRow key={id} visitor={visitor}/>)}
+      </div>
+    );
   }
 }
 

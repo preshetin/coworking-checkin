@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import Navigation from '../Navigation';
 import LandingPage from '../Landing';
@@ -9,6 +9,7 @@ import PasswordForgetPage from '../PasswordForget';
 import HomePage from '../Home';
 import VisitorsPage from '../Visitors/VisitorsPage';
 import VisitorDetailsPage from '../Visitors/VisitorDetailsPage';
+import VisitorCreatePage from '../Visitors/VisitorCreatePage';
 import MessagesPage from '../Messages/MessagesPage';
 import AccountPage from '../Account';
 import AdminPage from '../Admin';
@@ -23,19 +24,25 @@ const App = () => (
 
       <section className="section">
         <div className="container">
-          <Route exact path={ROUTES.LANDING} component={LandingPage} />
-          <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
-          <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-          <Route
-            path={ROUTES.PASSWORD_FORGET}
-            component={PasswordForgetPage}
-          />
-          <Route path={ROUTES.HOME} component={HomePage} />
-          <Route exact path={ROUTES.VISITORS} component={VisitorsPage} />
-          <Route path={ROUTES.VISITOR_DETAILS} component={VisitorDetailsPage} />
-          <Route path={ROUTES.MESSAGES} component={MessagesPage} />
-          <Route path={ROUTES.ACCOUNT} component={AccountPage} />
-          <Route path={ROUTES.ADMIN} component={AdminPage} />
+          <Switch>
+            <Route exact path={ROUTES.LANDING} component={LandingPage} />
+            <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
+            <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+            <Route
+              path={ROUTES.PASSWORD_FORGET}
+              component={PasswordForgetPage}
+            />
+            <Route path={ROUTES.HOME} component={HomePage} />
+            <Route exact path={ROUTES.VISITORS} component={VisitorsPage} />
+            <Route
+              exact path={ROUTES.VISITOR_CREATE}
+              component={VisitorCreatePage}
+            />
+            <Route exact path={ROUTES.VISITOR_DETAILS} component={VisitorDetailsPage} />
+            <Route path={ROUTES.MESSAGES} component={MessagesPage} />
+            <Route path={ROUTES.ACCOUNT} component={AccountPage} />
+            <Route path={ROUTES.ADMIN} component={AdminPage} />
+          </Switch>
         </div>	
       </section>
 

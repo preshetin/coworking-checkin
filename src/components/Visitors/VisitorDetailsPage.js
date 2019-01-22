@@ -26,13 +26,15 @@ class VisitorDetailsPage extends React.Component {
     const {visitor} = this.props;
 
     if (visitor === undefined) {
-      return 111;
+      return <h1 class="title">Loading...</h1>;
     }
 
     return (
       <div>
         <BackButton />
-        {'VisitorDetailsPage ' + id}
+        <h1 class="title">
+          {'Edit ' + id}
+        </h1>
         <br />
         {visitor.firstName}
       </div>
@@ -41,8 +43,7 @@ class VisitorDetailsPage extends React.Component {
 } 
 
 const mapStateToProps = (state, ownProps) => ({
-  visitor: selectVisitor(state.visitors, ownProps.match.params.id),
-  foo: "foo"
+  visitor: selectVisitor(state.visitors, ownProps.match.params.id)
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

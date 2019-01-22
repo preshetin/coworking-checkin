@@ -4,6 +4,7 @@ export const SIGN_IN = '/signin';
 export const HOME = '/home';
 export const VISITORS = '/visitors';
 export const VISITOR_DETAILS = '/visitors/:id';
+export const VISITOR_CREATE = '/visitors/create';
 export const TICKETS = '/tickets';
 export const MESSAGES = '/messages';
 export const ACCOUNT = '/account';
