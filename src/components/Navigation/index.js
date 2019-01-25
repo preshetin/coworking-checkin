@@ -14,7 +14,6 @@ const Navigation = ({ authUser }) => {
   const itemsStart = authUser ? (
     <div className="navbar-start">
       <Link className="navbar-item" to={ROUTES.HOME}>Home</Link>
-      <Link className="navbar-item" to={ROUTES.MESSAGES}>Messages</Link>
       <Link className="navbar-item" to={ROUTES.VISITORS}>Коворкеры</Link>
       <Link className="navbar-item" to={ROUTES.TICKETS}>Абонементы</Link>
       <Link className="navbar-item" to={ROUTES.ACCOUNT}>Account</Link>

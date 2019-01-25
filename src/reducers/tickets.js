@@ -23,3 +23,7 @@ export const selectTickets = (state) => {
   });
   return result;
 }
+
+export const selectTicket = (state, id) => {
+  return state.tickets[id];
+}

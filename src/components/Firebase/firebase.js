@@ -115,6 +115,12 @@ class Firebase {
   // *** Ticket API ***
 
   ticket = uid => this.firestore.collection('tickets').doc(uid);
+
+  createTicket = values => this.firestore.collection('tickets').add(values);
+
+  updateTicket = ( id, ticket ) => this.firestore.collection('tickets')
+    .doc(id).set(ticket, { merge: true });
+
   
   tickets = () => this.firestore.collection('tickets');
 
