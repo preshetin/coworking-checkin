@@ -1,31 +1,31 @@
 const INITIAL_STATE = {
-  users: null,
-};
+  users: null
+}
 
 const applySetUsers = (state, action) => ({
   ...state,
-  users: action.users,
-});
+  users: action.users
+})
 
 const applySetUser = (state, action) => ({
   ...state,
   users: {
     ...state.users,
-    [action.uid]: action.user,
-  },
-});
+    [action.uid]: action.user
+  }
+})
 
-function userReducer(state = INITIAL_STATE, action) {
+function userReducer (state = INITIAL_STATE, action) {
   switch (action.type) {
     case 'USERS_SET': {
-      return applySetUsers(state, action);
+      return applySetUsers(state, action)
     }
     case 'USER_SET': {
-      return applySetUser(state, action);
+      return applySetUser(state, action)
     }
     default:
-      return state;
+      return state
   }
 }
 
-export default userReducer;
+export default userReducer

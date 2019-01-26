@@ -1,11 +1,11 @@
-import React from 'react';
+import React from 'react'
 
-import MessageItem from './MessageItem';
+import MessageItem from './MessageItem'
 
 const MessageList = ({
   messages,
   onEditMessage,
-  onRemoveMessage,
+  onRemoveMessage
 }) => (
   <ul>
     {messages.map(message => (
@@ -17,6 +17,6 @@ const MessageList = ({
       />
     ))}
   </ul>
-);
+)
 
-export default MessageList;
+export default MessageList

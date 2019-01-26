@@ -1,7 +1,7 @@
-import app from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/database';
-import 'firebase/firestore';
+import app from 'firebase/app'
+import 'firebase/auth'
+import 'firebase/database'
+import 'firebase/firestore'
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -9,31 +9,31 @@ const config = {
   databaseURL: process.env.REACT_APP_DATABASE_URL,
   projectId: process.env.REACT_APP_PROJECT_ID,
   storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-};
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID
+}
 
 class Firebase {
-  constructor() {
-    app.initializeApp(config);
+  constructor () {
+    app.initializeApp(config)
 
     /* Helper */
 
-    this.serverValue = app.database.ServerValue;
-    this.emailAuthProvider = app.auth.EmailAuthProvider;
+    this.serverValue = app.database.ServerValue
+    this.emailAuthProvider = app.auth.EmailAuthProvider
 
     /* Firebase APIs */
 
-    this.auth = app.auth();
-    this.db = app.database();
-    this.firestore = app.firestore();
-    const settings = {/* your settings... */ timestampsInSnapshots: true};
-    this.firestore.settings(settings);
+    this.auth = app.auth()
+    this.db = app.database()
+    this.firestore = app.firestore()
+    const settings = {/* your settings... */ timestampsInSnapshots: true }
+    this.firestore.settings(settings)
 
     /* Social Sign In Method Provider */
 
-    this.googleProvider = new app.auth.GoogleAuthProvider();
-    this.facebookProvider = new app.auth.FacebookAuthProvider();
-    this.twitterProvider = new app.auth.TwitterAuthProvider();
+    this.googleProvider = new app.auth.GoogleAuthProvider()
+    this.facebookProvider = new app.auth.FacebookAuthProvider()
+    this.twitterProvider = new app.auth.TwitterAuthProvider()
   }
 
   // *** Auth API ***
@@ -59,7 +59,7 @@ class Firebase {
 
   doSendEmailVerification = () =>
     this.auth.currentUser.sendEmailVerification({
-      url: process.env.REACT_APP_CONFIRMATION_EMAIL_REDIRECT,
+      url: process.env.REACT_APP_CONFIRMATION_EMAIL_REDIRECT
     });
 
   doPasswordUpdate = password =>
@@ -73,11 +73,11 @@ class Firebase {
         this.user(authUser.uid)
           .get()
           .then(snapshot => {
-            const dbUser = snapshot.data();
+            const dbUser = snapshot.data()
 
             // default empty roles
             if (!dbUser.roles) {
-              dbUser.roles = [];
+              dbUser.roles = []
             }
 
             // merge auth and db user
@@ -86,19 +86,19 @@ class Firebase {
               email: authUser.email,
               emailVerified: authUser.emailVerified,
               providerData: authUser.providerData,
-              ...dbUser,
-            };
+              ...dbUser
+            }
 
-            next(authUser);
-          });
+            next(authUser)
+          })
       } else {
-        fallback();
+        fallback()
       }
     });
 
   // *** User API ***
 
-  //user = uid => this.db.ref(`users/${uid}`);
+  // user = uid => this.db.ref(`users/${uid}`);
   user = uid => this.firestore.collection(`users`).doc(uid);
 
   // users = () => this.db.ref('users');
@@ -108,20 +108,19 @@ class Firebase {
 
   //  message = uid => this.db.ref(`messages/${uid}`);
   message = uid => this.firestore.collection('messages').doc(uid);
-  
+
   //  messages = () => this.db.ref('messages');
   messages = () => this.firestore.collection('messages');
-  
+
   // *** Ticket API ***
 
   ticket = uid => this.firestore.collection('tickets').doc(uid);
 
   createTicket = values => this.firestore.collection('tickets').add(values);
 
-  updateTicket = ( id, ticket ) => this.firestore.collection('tickets')
+  updateTicket = (id, ticket) => this.firestore.collection('tickets')
     .doc(id).set(ticket, { merge: true });
 
-  
   tickets = () => this.firestore.collection('tickets');
 
   ticketsForUser = (uid) => this.firestore.collection('tickets')
@@ -131,11 +130,11 @@ class Firebase {
     return this.firestore.collection('tickets')
       .where('visitId', '==', visitId).get().then(querySnapshot => {
         if (querySnapshot.docs.length) {
-          return querySnapshot.docs[0];
+          return querySnapshot.docs[0]
         } else {
-          return null;
+          return null
         }
-      });
+      })
   }
 
   // *** Visitors API **
@@ -147,13 +146,13 @@ class Firebase {
 
   createVisitor = values => this.firestore.collection('visitors').add(values);
 
-  updateVisitor = ( id, visitor ) => this.firestore.collection('visitors')
+  updateVisitor = (id, visitor) => this.firestore.collection('visitors')
     .doc(id).set(visitor, { merge: true });
 
   // *** Visit API ***
 
   visit = uid => this.firestore.collection('visits').doc(uid);
-  
+
   visits = () => this.firestore.collection('visits');
 
   visitsForUser = (uid) => this.firestore.collection('visits')
@@ -163,20 +162,19 @@ class Firebase {
 
   checkoutVisit = (visit) => {
     return this.ticketWithVisit(visit.uid).then(ticketSnapshot => {
-      if ( ticketSnapshot) {
+      if (ticketSnapshot) {
         return this.ticket(ticketSnapshot.id).set({
           visitId: null
-        }, { merge: true }).then( () => {
+        }, { merge: true }).then(() => {
           return this.firestore.collection('visits')
-              .doc(visit.uid).set({ endAt: visit.endAt }, { merge: true })
+            .doc(visit.uid).set({ endAt: visit.endAt }, { merge: true })
         })
       } else {
         return this.firestore.collection('visits')
-            .doc(visit.uid).set({ endAt: visit.endAt }, { merge: true })
+          .doc(visit.uid).set({ endAt: visit.endAt }, { merge: true })
       }
     })
   }
-
 }
 
-export default Firebase;
+export default Firebase

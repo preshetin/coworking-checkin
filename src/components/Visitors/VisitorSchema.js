@@ -1,4 +1,4 @@
-import * as Yup from 'yup';
+import * as Yup from 'yup'
 
 const VisitorSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -11,7 +11,7 @@ const VisitorSchema = Yup.object().shape({
     .required('Required'),
   email: Yup.string()
     .email('Invalid email')
-    .required('Required'),
-});
+    .required('Required')
+})
 
-export default VisitorSchema;
+export default VisitorSchema

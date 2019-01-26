@@ -1,13 +1,12 @@
-import React from 'react';
+import React from 'react'
 
 const BulmaInput = ({ name, onChange, label, onBlur, value, error, touched }) => {
-
-  const errorClass = error ? 'is-danger': '';
+  const errorClass = error ? 'is-danger' : ''
 
   return (
-    <div className="field">
-      <label className="label">{label}</label>
-      <div className="control">
+    <div className='field'>
+      <label className='label'>{label}</label>
+      <div className='control'>
         <input
           className={`input ${errorClass}`}
           name={name}
@@ -17,9 +16,9 @@ const BulmaInput = ({ name, onChange, label, onBlur, value, error, touched }) =>
         />
       </div>
       {error && touched &&
-         <p className="help is-danger">{error}</p>}
+      <p className='help is-danger'>{error}</p>}
     </div>
-  );
+  )
 }
 
-export default BulmaInput;
+export default BulmaInput

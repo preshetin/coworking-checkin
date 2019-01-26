@@ -1,31 +1,31 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
+import React from 'react'
+import { connect } from 'react-redux'
+import { compose } from 'recompose'
 
-import { withFirebase } from '../Firebase';
+import { withFirebase } from '../Firebase'
 
 const needsEmailVerification = authUser =>
   authUser &&
   !authUser.emailVerified &&
   authUser.providerData
     .map(provider => provider.providerId)
-    .includes('password');
+    .includes('password')
 
 const withEmailVerification = Component => {
   class WithEmailVerification extends React.Component {
-    constructor(props) {
-      super(props);
+    constructor (props) {
+      super(props)
 
-      this.state = { isSent: false };
+      this.state = { isSent: false }
     }
 
     onSendEmailVerification = () => {
       this.props.firebase
         .doSendEmailVerification()
-        .then(() => this.setState({ isSent: true }));
+        .then(() => this.setState({ isSent: true }))
     };
 
-    render() {
+    render () {
       return needsEmailVerification(this.props.authUser) ? (
         <div>
           {this.state.isSent ? (
@@ -43,7 +43,7 @@ const withEmailVerification = Component => {
           )}
 
           <button
-            type="button"
+            type='button'
             onClick={this.onSendEmailVerification}
             disabled={this.state.isSent}
           >
@@ -52,18 +52,18 @@ const withEmailVerification = Component => {
         </div>
       ) : (
         <Component {...this.props} />
-      );
+      )
     }
   }
 
   const mapStateToProps = state => ({
-    authUser: state.sessionState.authUser,
-  });
+    authUser: state.sessionState.authUser
+  })
 
   return compose(
     withFirebase,
-    connect(mapStateToProps),
-  )(WithEmailVerification);
-};
+    connect(mapStateToProps)
+  )(WithEmailVerification)
+}
 
-export default withEmailVerification;
+export default withEmailVerification

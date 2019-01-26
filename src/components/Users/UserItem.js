@@ -1,21 +1,21 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { compose } from 'recompose'
 
-import { withFirebase } from '../Firebase';
+import { withFirebase } from '../Firebase'
 
 class UserItem extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
 
     this.state = {
-      loading: false,
-    };
+      loading: false
+    }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     if (!this.props.user) {
-      this.setState({ loading: true });
+      this.setState({ loading: true })
     }
 
     this.props.firebase
@@ -23,24 +23,24 @@ class UserItem extends Component {
       .on('value', snapshot => {
         this.props.onSetUser(
           snapshot.val(),
-          this.props.match.params.id,
-        );
+          this.props.match.params.id
+        )
 
-        this.setState({ loading: false });
-      });
+        this.setState({ loading: false })
+      })
   }
 
-  componentWillUnmount() {
-    this.props.firebase.user(this.props.match.params.id).off();
+  componentWillUnmount () {
+    this.props.firebase.user(this.props.match.params.id).off()
   }
 
   onSendPasswordResetEmail = () => {
-    this.props.firebase.doPasswordReset(this.props.user.email);
+    this.props.firebase.doPasswordReset(this.props.user.email)
   };
 
-  render() {
-    const { user } = this.props;
-    const { loading } = this.state;
+  render () {
+    const { user } = this.props
+    const { loading } = this.state
 
     return (
       <div>
@@ -60,7 +60,7 @@ class UserItem extends Component {
             </span>
             <span>
               <button
-                type="button"
+                type='button'
                 onClick={this.onSendPasswordResetEmail}
               >
                 Send Password Reset
@@ -69,22 +69,22 @@ class UserItem extends Component {
           </div>
         )}
       </div>
-    );
+    )
   }
 }
 
 const mapStateToProps = (state, props) => ({
-  user: (state.userState.users || {})[props.match.params.id],
-});
+  user: (state.userState.users || {})[props.match.params.id]
+})
 
 const mapDispatchToProps = dispatch => ({
-  onSetUser: (user, uid) => dispatch({ type: 'USER_SET', user, uid }),
-});
+  onSetUser: (user, uid) => dispatch({ type: 'USER_SET', user, uid })
+})
 
 export default compose(
   withFirebase,
   connect(
     mapStateToProps,
-    mapDispatchToProps,
-  ),
-)(UserItem);
+    mapDispatchToProps
+  )
+)(UserItem)

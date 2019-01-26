@@ -1,10 +1,10 @@
-import { combineReducers } from 'redux';
-import sessionReducer from './session';
-import userReducer from './user';
-import messageReducer from './message';
-import visitors from './visitors';
-import tickets from './tickets';
-import visits from './visits';
+import { combineReducers } from 'redux'
+import sessionReducer from './session'
+import userReducer from './user'
+import messageReducer from './message'
+import visitors from './visitors'
+import tickets from './tickets'
+import visits from './visits'
 
 const rootReducer = combineReducers({
   sessionState: sessionReducer,
@@ -13,6 +13,6 @@ const rootReducer = combineReducers({
   tickets,
   visitors,
   visits
-});
+})
 
-export default rootReducer;
+export default rootReducer

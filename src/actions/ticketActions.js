@@ -1,4 +1,4 @@
-import * as types from '../constants/actionTypes';
+import * as types from '../constants/actionTypes'
 
 export const setTickets = (tickets) => ({
   type: types.SET_TICKETS,
@@ -9,5 +9,4 @@ export const setTicket = (ticket, id) => ({
   type: types.SET_VISITOR,
   id,
   payload: ticket
-});
-
+})

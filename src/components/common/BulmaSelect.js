@@ -1,35 +1,34 @@
-import React from 'react';
+import React from 'react'
 
 const BulmaSelect = ({ name, selectValues, onChange, label,
   onBlur, value, error, touched }) => {
-
-  const errorClass = error ? 'is-danger': '';
+  const errorClass = error ? 'is-danger' : ''
 
   return (
-<div className="field">
-  <label className="label">{label}</label>
-  <div className="control">
-    <div className="select">
-      <select
-        onChange={onChange}
-        value={value}
-        name={name}
-        onBlur={onBlur}
-      >
-        <option value="empty">Select...</option>
-        {selectValues.map(el => <option key={el.value} value={el.value}>{el.title}</option>)}
-      </select>
+    <div className='field'>
+      <label className='label'>{label}</label>
+      <div className='control'>
+        <div className='select'>
+          <select
+            onChange={onChange}
+            value={value}
+            name={name}
+            onBlur={onBlur}
+          >
+            <option value='empty'>Select...</option>
+            {selectValues.map(el => <option key={el.value} value={el.value}>{el.title}</option>)}
+          </select>
+        </div>
+        {error && touched &&
+        <p className='help is-danger'>{error}</p>}
+      </div>
     </div>
-    {error && touched &&
-       <p className="help is-danger">{error}</p>}
-  </div>
-</div>
-      )
+  )
 
   return (
-    <div className="field">
-      <label className="label">{label}</label>
-      <div className="control">
+    <div className='field'>
+      <label className='label'>{label}</label>
+      <div className='control'>
         <input
           className={`input ${errorClass}`}
           name={name}
@@ -39,9 +38,9 @@ const BulmaSelect = ({ name, selectValues, onChange, label,
         />
       </div>
       {error && touched &&
-         <p className="help is-danger">{error}</p>}
+      <p className='help is-danger'>{error}</p>}
     </div>
-  );
+  )
 }
 
-export default BulmaSelect;
+export default BulmaSelect

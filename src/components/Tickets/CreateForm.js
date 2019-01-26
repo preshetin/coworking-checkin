@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
 const CreateForm = () => (
   'CreateForm'
 )
 
-export default CreateForm;
+export default CreateForm

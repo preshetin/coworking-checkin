@@ -1,10 +1,10 @@
 import React from 'react'
-import VisitEntry from './VisitEntry';
+import VisitEntry from './VisitEntry'
 
 const VisitsList = ({ visits, onCheckouting }) => {
   return (
-    <div className="Visits-list">
-      <h1 className="title">Сейчас коворкают (visits):</h1>
+    <div className='Visits-list'>
+      <h1 className='title'>Сейчас коворкают (visits):</h1>
       <ul>
         {visits.map(v => <VisitEntry
           onCheckouting={onCheckouting}
@@ -13,7 +13,7 @@ const VisitsList = ({ visits, onCheckouting }) => {
         />)}
       </ul>
     </div>
-  );
+  )
 }
 
-export default VisitsList;
+export default VisitsList

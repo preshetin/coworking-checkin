@@ -1,39 +1,39 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { compose } from 'recompose'
 
-import { withFirebase } from '../Firebase';
-import * as ROUTES from '../../constants/routes';
+import { withFirebase } from '../Firebase'
+import * as ROUTES from '../../constants/routes'
 
 class UserList extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
 
     this.state = {
-      loading: false,
-    };
+      loading: false
+    }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     if (!this.props.users.length) {
-      this.setState({ loading: true });
+      this.setState({ loading: true })
     }
 
     this.props.firebase.users().on('value', snapshot => {
-      this.props.onSetUsers(snapshot.val());
+      this.props.onSetUsers(snapshot.val())
 
-      this.setState({ loading: false });
-    });
+      this.setState({ loading: false })
+    })
   }
 
-  componentWillUnmount() {
-    this.props.firebase.users().off();
+  componentWillUnmount () {
+    this.props.firebase.users().off()
   }
 
-  render() {
-    const { users } = this.props;
-    const { loading } = this.state;
+  render () {
+    const { users } = this.props
+    const { loading } = this.state
 
     return (
       <div>
@@ -60,25 +60,25 @@ class UserList extends Component {
           ))}
         </ul>
       </div>
-    );
+    )
   }
 }
 
 const mapStateToProps = state => ({
   users: Object.keys(state.userState.users || {}).map(key => ({
     ...state.userState.users[key],
-    uid: key,
-  })),
-});
+    uid: key
+  }))
+})
 
 const mapDispatchToProps = dispatch => ({
-  onSetUsers: users => dispatch({ type: 'USERS_SET', users }),
-});
+  onSetUsers: users => dispatch({ type: 'USERS_SET', users })
+})
 
 export default compose(
   withFirebase,
   connect(
     mapStateToProps,
-    mapDispatchToProps,
-  ),
-)(UserList);
+    mapDispatchToProps
+  )
+)(UserList)

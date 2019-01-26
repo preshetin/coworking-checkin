@@ -1,20 +1,18 @@
-import React, { Component } from 'react';
-import VisitsListContainer from '../Visits/VisitsListContainer';
-import VisitCreator from '../Visits/VisitCreator';
+import React, { Component } from 'react'
+import VisitsListContainer from '../Visits/VisitsListContainer'
+import VisitCreator from '../Visits/VisitCreator'
 
 class HomePage extends Component {
-
-  render() {
-
+  render () {
     return (
-      <div className="container">
+      <div className='container'>
         <VisitCreator />
         <br />
         <br />
         <VisitsListContainer />
       </div>
-    );
+    )
   }
 }
 
-export default HomePage;
+export default HomePage

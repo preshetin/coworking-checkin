@@ -1,10 +1,10 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react'
+import { Link } from 'react-router-dom'
 
-const VisitorRow = ({visitor}) => {
+const VisitorRow = ({ visitor }) => {
   return (
-    <div className="box">
-      {visitor.firstName} 
+    <div className='box'>
+      {visitor.firstName}
       <br />
       <Link to={`/visitors/${visitor.uid}`}>
         Edit
@@ -13,4 +13,4 @@ const VisitorRow = ({visitor}) => {
   )
 }
 
-export default VisitorRow;
+export default VisitorRow

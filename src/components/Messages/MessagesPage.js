@@ -1,30 +1,29 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { compose } from 'recompose'
 
-import { withAuthorization, withEmailVerification } from '../Session';
-import { withFirebase } from '../Firebase';
-import Messages from '../Messages';
+import { withAuthorization, withEmailVerification } from '../Session'
+import { withFirebase } from '../Firebase'
+import Messages from '../Messages'
 
 class MessagesPage extends Component {
-
-  componentDidMount() {
+  componentDidMount () {
     this.unsubscribe = this.props.firebase
       .users()
       .onSnapshot(snapshot => {
-        let users = {};
-        snapshot.forEach(doc => (users[doc.id] = doc.data()));
-        this.props.onSetUsers(users);
-      });
+        let users = {}
+        snapshot.forEach(doc => (users[doc.id] = doc.data()))
+        this.props.onSetUsers(users)
+      })
   }
 
-  componentWillUnmount() {
-    this.unsubscribe();
+  componentWillUnmount () {
+    this.unsubscribe()
   }
 
-  render() {
+  render () {
     if (this.props.users === null) {
-      return null;
+      return null
     }
 
     return (
@@ -35,26 +34,26 @@ class MessagesPage extends Component {
         <Messages users={this.props.users} />
 
       </div>
-    );
+    )
   }
 }
 
 const mapStateToProps = state => ({
-  users: state.userState.users,
-});
+  users: state.userState.users
+})
 
 const mapDispatchToProps = dispatch => ({
-  onSetUsers: users => dispatch({ type: 'USERS_SET', users }),
-});
+  onSetUsers: users => dispatch({ type: 'USERS_SET', users })
+})
 
-const condition = authUser => !!authUser;
+const condition = authUser => !!authUser
 
 export default compose(
   withFirebase,
   connect(
     mapStateToProps,
-    mapDispatchToProps,
+    mapDispatchToProps
   ),
   withEmailVerification,
-  withAuthorization(condition),
-)(MessagesPage);
+  withAuthorization(condition)
+)(MessagesPage)

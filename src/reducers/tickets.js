@@ -1,5 +1,5 @@
-import { SET_TICKETS } from '../constants/actionTypes';
-import _ from 'lodash';
+import { SET_TICKETS } from '../constants/actionTypes'
+import _ from 'lodash'
 
 const defaultState = {
   tickets: {}
@@ -10,20 +10,20 @@ export default (state = defaultState, action) => {
     case SET_TICKETS:
       return Object.assign({}, state, {
         tickets: action.payload
-      });
+      })
     default:
-      return state;
+      return state
   }
 }
 
 export const selectTickets = (state) => {
-  const result = [];
+  const result = []
   _.forOwn(state.tickets, (ticket, key) => {
-    result.push({ ...ticket, uid: key });
-  });
-  return result;
+    result.push({ ...ticket, uid: key })
+  })
+  return result
 }
 
 export const selectTicket = (state, id) => {
-  return state.tickets[id];
+  return state.tickets[id]
 }
