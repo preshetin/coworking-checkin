@@ -1,32 +1,32 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import React from 'react'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
-import Navigation from '../Navigation';
-import LandingPage from '../Landing';
-import SignUpPage from '../SignUp';
-import SignInPage from '../SignIn';
-import PasswordForgetPage from '../PasswordForget';
-import HomePage from '../Home';
-import VisitorsPage from '../Visitors/VisitorsPage';
-import VisitorDetailsPage from '../Visitors/VisitorDetailsPage';
-import VisitorCreatePage from '../Visitors/VisitorCreatePage';
-import TicketsPage from '../Tickets/TicketsPage';
-import TicketsEditPage from '../Tickets/EditPage';
-import TicketsCreatePage from '../Tickets/CreatePage';
-import MessagesPage from '../Messages/MessagesPage';
-import AccountPage from '../Account';
-import AdminPage from '../Admin';
+import Navigation from '../Navigation'
+import LandingPage from '../Landing'
+import SignUpPage from '../SignUp'
+import SignInPage from '../SignIn'
+import PasswordForgetPage from '../PasswordForget'
+import HomePage from '../Home'
+import VisitorsPage from '../Visitors/VisitorsPage'
+import VisitorDetailsPage from '../Visitors/VisitorDetailsPage'
+import VisitorCreatePage from '../Visitors/VisitorCreatePage'
+import TicketsPage from '../Tickets/TicketsPage'
+import TicketsEditPage from '../Tickets/EditPage'
+import TicketsCreatePage from '../Tickets/CreatePage'
+import MessagesPage from '../Messages/MessagesPage'
+import AccountPage from '../Account'
+import AdminPage from '../Admin'
 
-import * as ROUTES from '../../constants/routes';
-import { withAuthentication } from '../Session';
+import * as ROUTES from '../../constants/routes'
+import { withAuthentication } from '../Session'
 
 const App = () => (
   <Router>
     <div>
       <Navigation />
 
-      <section className="section">
-        <div className="container">
+      <section className='section'>
+        <div className='container'>
           <Switch>
             <Route exact path={ROUTES.LANDING} component={LandingPage} />
             <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
@@ -46,11 +46,11 @@ const App = () => (
             <Route path={ROUTES.ACCOUNT} component={AccountPage} />
             <Route path={ROUTES.ADMIN} component={AdminPage} />
           </Switch>
-        </div>	
+        </div>
       </section>
 
     </div>
   </Router>
-);
+)
 
-export default withAuthentication(App);
+export default withAuthentication(App)
