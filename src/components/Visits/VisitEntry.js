@@ -8,10 +8,11 @@ const VisitEntry = ({ visit, onCheckouting }) => {
     onCheckouting(visit)
   }
 
+  const checkoutButton = <button className='button' onClick={handleClick}> Checkout </button>
+
   return (<li style={{ fontSize: '200%' }} key={visit.id}>
     {visit.visitorName} &nbsp;
-    <button className='button' onClick={handleClick}> Checkout </button>&nbsp;
-    |
+    |&nbsp;
     <Timer start={new Date(visit.startAt.seconds * 1000)} />
   </li>)
 }

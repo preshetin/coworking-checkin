@@ -4,7 +4,7 @@ import VisitEntry from './VisitEntry'
 const VisitsList = ({ visits, onCheckouting }) => {
   return (
     <div className='Visits-list'>
-      <h1 className='title'>Сейчас коворкают (visits):</h1>
+      <h1 className='title'>Сейчас коворкают</h1>
       <ul>
         {visits.map(v => <VisitEntry
           onCheckouting={onCheckouting}
