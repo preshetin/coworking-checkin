@@ -3,8 +3,9 @@ import moment from 'moment'
 
 const CheckoutingModal = ({ visit, onDoCheckout, onCheckoutCancel }) => {
   const endAt = new Date()
-
-  console.log('modal visit', visit)
+  
+  const startAtFormatted = moment.unix(visit.startAt.seconds).format('MMMM Do YYYY, h:mm:ss a')
+  const endAtFormatted = moment(endAt).format('MMMM Do YYYY, h:mm:ss a')
 
   return (
     <div className='modal is-active'>
@@ -16,8 +17,8 @@ const CheckoutingModal = ({ visit, onDoCheckout, onCheckoutCancel }) => {
         </header>
         <section className='modal-card-body'>
           <h1 className='title is-1'> 11.11 BYN </h1>
-          <h2 className='subtitle'>Start: {moment.unix(visit.startAt.seconds).format('MMMM Do YYYY, h:mm:ss a')}	</h2>
-          <h2 className='subtitle'>End: {moment(endAt).format('MMMM Do YYYY, h:mm:ss a')}	</h2>
+          <h2 className='subtitle'>Start: {startAtFormatted}	</h2>
+          <h2 className='subtitle'>End: {endAtFormatted}	</h2>
         </section>
         <footer className='modal-card-foot'>
           <button
