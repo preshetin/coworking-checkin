@@ -1,7 +1,7 @@
 import React from 'react'
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import BulmaInput from '../common/BulmaInput'
-import BulmaSelect from '../common/BulmaSelect'
+import VisitorSelect from '../common/VisitorSelect'
 import TicketSchema from './TicketSchema'
 
 const TicketForm = ({ id, ticket, onSubmit, buttonName, visitors }) => (
@@ -12,10 +12,8 @@ const TicketForm = ({ id, ticket, onSubmit, buttonName, visitors }) => (
     render={({ values, errors, status, touched, handleBlur,
       handleChange, handleSubmit, isSubmitting }) => (
         <form onSubmit={handleSubmit}>
-        <BulmaSelect
+        <VisitorSelect
             name='visitorId'
-            label='Visitor'
-            selectValues={visitors}
             onChange={handleChange}
             onBlur={handleBlur}
             error={errors.visitorId}

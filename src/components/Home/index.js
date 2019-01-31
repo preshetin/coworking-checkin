@@ -6,9 +6,6 @@ class HomePage extends Component {
   render () {
     return (
       <div className='container'>
-        <VisitCreator />
-        <br />
-        <br />
         <VisitsListContainer />
       </div>
     )

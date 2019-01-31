@@ -7,7 +7,7 @@ import { selectTickets } from '../../reducers/tickets'
 import { setTickets } from '../../actions/ticketActions'
 import { selectVisitors } from '../../reducers/visitors'
 import { setVisitors } from '../../actions/visitorActions'
-import TicketRow from './TicketRow'
+import TicketCard from './TicketCard'
 
 const getVisitorById = (visitors, ticketId) => {
   const visitorsArr = []
@@ -44,7 +44,7 @@ class TicketsListContainer extends React.Component {
       <div className='container'>
         {tickets.map((ticket, id) => {
           console.log('visitors', visitors, ticket.visitorId, visitors[ticket.visitorId])
-          return <TicketRow key={id} visitor={visitors[ticket.visitorId]} foo='bar' ticket={ticket} />
+          return <TicketCard key={id} visitor={visitors[ticket.visitorId]} foo='bar' ticket={ticket} />
         })}
       </div>
     )

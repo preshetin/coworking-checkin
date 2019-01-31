@@ -1,56 +1,61 @@
 import React from 'react'
+import './EditPage.css'
+import TicketPreview from './TicketPreview'
+import TicketCard from './TicketCard'
 import BackButton from '../common/BackButton'
 import EditForm from './EditForm'
 import { selectTicket } from '../../reducers/tickets'
+import { selectVisitor } from '../../reducers/visitors'
 import { setTicket } from '../../actions/ticketActions'
+import { setVisitor } from '../../actions/visitorActions'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
 import { withAuthorization, withEmailVerification } from '../Session'
 import { withFirebase } from '../Firebase'
 
 class EditPage extends React.Component {
-  componentDidMount () {
-    const { id } = this.props.match.params
-    this.unsubscribe = this.props.firebase.ticket(id)
-      .onSnapshot(snapshot => {
-        this.props.onSetTicket(snapshot.data())
-      })
-  }
 
-  componentWillUnmount () {
-    this.unsubscribe()
+  constructor(props) {
+    super(props)
+      this.state = {
+        ticket: null,
+        visitor: null
+      }
+    
+  }
+  componentDidMount () {
+    const ticketId = this.props.match.params.id
+    const { firebase } = this.props
+    firebase.ticket(ticketId).get().then(ticketSnapshot => {
+      const visitorId = ticketSnapshot.data().visitorId
+      console.log('done', visitorId)
+      this.setState({ticket: { ...ticketSnapshot.data(), id:ticketSnapshot.id }})
+      firebase.visitor(visitorId).get().then(visitorSnapshot => {
+        this.setState({ visitor: { ...visitorSnapshot.data(), id: visitorSnapshot.id }  })
+          })
+        })
   }
 
   render () {
     const { id } = this.props.match.params
-    const { ticket } = this.props
+    const { ticket, visitor } = this.state
 
-    if (ticket === undefined) {
+    if (ticket === null || visitor == null) {
       return <h1 className='title'>Loading...</h1>
     }
 
     return (
       <div className='columns'>
-        <div className='column is-half'>
+        <div className='column '>
           <BackButton />
-          <h1 className='title'> {'Edit ' + ticket.firstName} </h1>
-          <EditForm id={id} ticket={ticket} />
+          <TicketPreview ticket={ticket} visitor={visitor} />
         </div>
       </div>
     )
   }
 }
 
-const mapStateToProps = (state, ownProps) => ({
-  ticket: selectTicket(state.tickets, ownProps.match.params.id)
-})
-
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  onSetTicket: ticket => dispatch(setTicket(ticket, ownProps.match.params.id))
-})
-
 export default compose(
   withFirebase,
-  connect(mapStateToProps, mapDispatchToProps),
   withEmailVerification
 )(EditPage)

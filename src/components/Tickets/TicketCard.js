@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const TicketRow = ({ ticket, visitor }) => {
+const TicketCard = ({ ticket, visitor }) => {
   if (!visitor) {
     return null
   }
@@ -16,10 +16,10 @@ const TicketRow = ({ ticket, visitor }) => {
       Hours remaining: {ticket.hoursRemaining || ' -  '}
       <br />
       <Link to={`/tickets/${ticket.uid}`}>
-        Edit
+        Print
       </Link>
     </div>
   )
 }
 
-export default TicketRow
+export default TicketCard
