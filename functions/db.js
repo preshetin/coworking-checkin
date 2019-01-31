@@ -9,18 +9,8 @@ const firestore = admin.firestore()
 const settings = {/* your settings... */ timestampsInSnapshots: true }
 firestore.settings(settings)
 const calculateRemainingHours = require('./utils').calculateRemainingHours
-
-const getHumanReadable = duration => {
-  var hours = parseInt(duration.asHours())
-  var minutes = parseInt(duration.asMinutes()) % 60
-  if (hours === 0 && minutes === 0) {
-    return 'a few seconds'
-  }
-  if (hours === 0) {
-    return `${minutes} min`
-  }
-  return `${hours} h and ${minutes} min`
-}
+const durationForHumans = require('./utils').durationForHumans
+const hoursRemainingFormatted = require('./utils').hoursRemainingFormatted
 
 const db = {
   getTicketById (ticketId) {
@@ -53,23 +43,27 @@ const db = {
         const startAtSeconds = visitSnapshot.data().startAt.seconds
         const start = moment(startAtSeconds * 1000)
         const duration = moment.duration(end.diff(start))
-        const humanReadable = getHumanReadable(duration)
+        const visitLasted = durationForHumans(duration)
 
         firestore.collection('visits').doc(ticketSnapshot.data().visitId).set({
           endAt
         }, { merge: true })
-        return Promise.resolve({ startAtSeconds, humanReadable })
+        return Promise.resolve({ startAtSeconds, visitLasted })
       })
-      .then(({ startAtSeconds, humanReadable }) => {
+      .then(({ startAtSeconds, visitLasted }) => {
+        const hoursRemaining = ticketSnapshot.data().hoursRemaining
+        const newRemainingHours = calculateRemainingHours(hoursRemaining, startAtSeconds)
         firestore.collection('tickets').doc(ticketSnapshot.id).set({
-          hoursRemaining: calculateRemainingHours(ticketSnapshot.data().hoursRemaining, startAtSeconds),
+          hoursRemaining: newRemainingHours,
           visitId: null
         }, { merge: true })
-        return Promise.resolve(humanReadable)
+        const remainingFormatted = hoursRemainingFormatted(newRemainingHours)
+        const resultStr = `You visit lasted ${visitLasted}. ${remainingFormatted} remaining`
+        return Promise.resolve(resultStr)
       })
-      .then(humanReadable => {
+      .then(visitLasted => {
         // add remaining hours to message
-        return humanReadable
+        return visitLasted
       })
   },
 

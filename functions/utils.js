@@ -12,6 +12,27 @@ const calculateRemainingHours = (hoursRemaining, startAtSeconds) => {
   return resultRemaining
 }
 
+const durationForHumans = duration => {
+  var hours = parseInt(duration.asHours())
+  var minutes = parseInt(duration.asMinutes()) % 60
+  if (hours === 0 && minutes === 0) {
+    return 'a few seconds'
+  }
+  if (hours === 0) {
+    return `${minutes} min`
+  }
+  return `${hours} h and ${minutes} min`
+}
+
+const hoursRemainingFormatted = hoursRemaining => {
+  const hours = parseInt(hoursRemaining)
+  const minutes = parseInt((hoursRemaining - hours) * 60)
+  console.log('hoursRemainingFormatted', hoursRemaining, hours, minutes)
+  return `${hours} hours and ${minutes} min`
+}
+
 module.exports = {
-  calculateRemainingHours
+  calculateRemainingHours,
+  hoursRemainingFormatted,
+  durationForHumans
 }
