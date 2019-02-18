@@ -12,9 +12,7 @@ import * as ROLES from '../../constants/roles'
 const Navigation = ({ authUser }) => {
   const itemsStart = authUser ? (
     <div className='navbar-start'>
-      <Link className='navbar-item' to={ROUTES.HOME}>Home</Link>
       <Link className='navbar-item' to={ROUTES.VISITORS}>Коворкеры</Link>
-      <Link className='navbar-item' to={ROUTES.TICKETS}>Абонементы</Link>
       <Link className='navbar-item' to={ROUTES.ACCOUNT}>Account</Link>
       {authUser.roles.includes(ROLES.ADMIN) && (
         <Link className='navbar-item' to={ROUTES.ADMIN}>Admin</Link>
@@ -50,7 +48,7 @@ const Navigation = ({ authUser }) => {
   return (
     <nav className='navbar' role='navigation' aria-label='main navigation'>
       <div className='navbar-brand'>
-        <Link className='navbar-item' to='/'>
+        <Link className='navbar-item' to={ROUTES.HOME}>
           <img src={logo} />
         </Link>
 

@@ -20,6 +20,15 @@ const VisitorForm = ({ id, visitor, onSubmit, buttonName }) => (
           value={values.email}
         />
         <BulmaInput
+          name='hoursAmount'
+          label='Hours Amount'
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={errors.hoursAmount}
+          touched={touched.hoursAmount}
+          value={values.hoursAmount}
+        />
+        <BulmaInput
           name='firstName'
           label='First Name'
           onChange={handleChange}

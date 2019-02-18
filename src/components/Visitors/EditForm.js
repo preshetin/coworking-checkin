@@ -1,4 +1,5 @@
 import React from 'react'
+import VisitorSchema from './VisitorSchema'
 import { withRouter } from 'react-router-dom'
 import { withFirebase } from '../Firebase'
 import { compose } from 'recompose'
@@ -6,7 +7,9 @@ import VisitorForm from './VisitorForm'
 
 const EditForm = ({ id, history, visitor, firebase }) => {
   const handleSubmit = values => {
-    firebase.updateVisitor(id, values).then(
+    const castedValues = VisitorSchema.cast(values)
+    console.log('casted values', castedValues)
+    firebase.updateVisitor(id, castedValues).then(
       updatedUser => {
         history.push('/visitors')
       },

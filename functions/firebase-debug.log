@@ -1,0 +1,28 @@
+[debug] [2019-02-18T11:50:20.494Z] ----------------------------------------------------------------------
+[debug] [2019-02-18T11:50:20.498Z] Command:       /usr/local/Cellar/node/11.7.0/bin/node /usr/local/bin/firebase serve --only functions
+[debug] [2019-02-18T11:50:20.499Z] CLI Version:   6.3.1
+[debug] [2019-02-18T11:50:20.499Z] Platform:      darwin
+[debug] [2019-02-18T11:50:20.499Z] Node Version:  v11.7.0
+[debug] [2019-02-18T11:50:20.500Z] Time:          Mon Feb 18 2019 14:50:20 GMT+0300 (Moscow Standard Time)
+[debug] [2019-02-18T11:50:20.500Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-02-18T11:50:20.516Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-02-18T11:50:20.517Z] > authorizing via signed-in user
+[debug] [2019-02-18T11:50:20.517Z] [iam] checking project coworking-checkin for permissions ["firebase.projects.get"]
+[debug] [2019-02-18T11:50:20.520Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/coworking-checkin:testIamPermissions  
+
+[debug] [2019-02-18T11:50:21.486Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-18T11:50:21.491Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/coworking-checkin  
+ 
+[debug] [2019-02-18T11:50:22.440Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/petrreshetin/Sites/coworking-checkin'...
+[info] 
+[info] i  functions: Preparing to emulate functions.
+[debug] [2019-02-18T11:50:23.485Z] Fetching environment
+[debug] [2019-02-18T11:50:23.490Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/1042674910199:getServerAppConfig  
+ 
+[debug] [2019-02-18T11:50:23.902Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-18T11:50:23.902Z] Starting @google-cloud/functions-emulator
+[debug] [2019-02-18T11:50:25.982Z] Parsing function triggers
+[info] ✔  functions: handleQRCode: http://localhost:5000/coworking-checkin/us-central1/handleQRCode

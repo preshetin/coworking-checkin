@@ -21,22 +21,22 @@ const db = {
     return firestore.collection('visitors').doc(visitorId).get()
   },
 
-  doCheckIn (ticketSnapshot, visitorSnapshot) {
+  doCheckIn (visitorSnapshot) {
     const newVisitRef = firestore.collection('visits').doc()
     const newVisit = {
       startAt: new Date(),
-      visitorName: visitorSnapshot.data().firstName, // todo: set ref to visitor id
-      userId: ticketSnapshot.data().userId
+      visitorName: visitorSnapshot.data().firstName + ' ' + visitorSnapshot.data().lastName, // todo: set ref to visitor id
+      userId: visitorSnapshot.data().userId
     }
-    firestore.collection('tickets').doc(ticketSnapshot.id).set({
-      visitId: newVisitRef.id
+    firestore.collection('visitors').doc(visitorSnapshot.id).set({
+      activeVisitId: newVisitRef.id
     }, { merge: true })
     newVisitRef.set(newVisit)
     return Promise.resolve()
   },
 
-  doCheckOut (ticketSnapshot) {
-    return firestore.collection('visits').doc(ticketSnapshot.data().visitId).get()
+  doCheckOut (visitorSnapshot) {
+    return firestore.collection('visits').doc(visitorSnapshot.data().activeVisitId).get()
       .then(visitSnapshot => {
         const endAt = new Date()
         const end = moment()
@@ -45,20 +45,20 @@ const db = {
         const duration = moment.duration(end.diff(start))
         const visitLasted = durationForHumans(duration)
 
-        firestore.collection('visits').doc(ticketSnapshot.data().visitId).set({
+        firestore.collection('visits').doc(visitorSnapshot.data().activeVisitId).set({
           endAt
         }, { merge: true })
         return Promise.resolve({ startAtSeconds, visitLasted })
       })
       .then(({ startAtSeconds, visitLasted }) => {
-        const hoursRemaining = ticketSnapshot.data().hoursRemaining
+        const hoursRemaining = visitorSnapshot.data().hoursAmount
         const newRemainingHours = calculateRemainingHours(hoursRemaining, startAtSeconds)
-        firestore.collection('tickets').doc(ticketSnapshot.id).set({
-          hoursRemaining: newRemainingHours,
-          visitId: null
+        firestore.collection('visitors').doc(visitorSnapshot.id).set({
+          hoursAmount: newRemainingHours,
+          activeVisitId: null
         }, { merge: true })
         const remainingFormatted = hoursRemainingFormatted(newRemainingHours)
-        const resultStr = `You visit lasted ${visitLasted}. ${remainingFormatted} remaining`
+        const resultStr = `${visitLasted}. ${remainingFormatted} remaining`
         return Promise.resolve(resultStr)
       })
       .then(visitLasted => {
@@ -67,22 +67,20 @@ const db = {
       })
   },
 
-  toggleCheckin (ticketId) {
-    return db.getTicketById(ticketId).then(ticketSnapshot => {
-      if (!ticketSnapshot.exists) {
-        return Promise.resolve('❌ No such ticket')
+  toggleCheckin (visitorId) {
+    return db.getVisitorById(visitorId).then(visitorSnapshot => {
+      if (!visitorSnapshot.exists) {
+        return Promise.resolve('❌ No such visitor')
       }
-      return db.getVisitorById(ticketSnapshot.data().visitorId).then(visitorSnapshot => {
-        if (ticketSnapshot.data().visitId) {
-          return db.doCheckOut(ticketSnapshot).then((checkoutMessage) => {
-            const message = `👋 ${checkoutMessage}`
-            return Promise.resolve(message)
-          })
-        }
-        return db.doCheckIn(ticketSnapshot, visitorSnapshot).then(() => {
-          const message = `✅ Hello, ${visitorSnapshot.data().firstName}`
+      if (visitorSnapshot.data().activeVisitId) {
+        return db.doCheckOut(visitorSnapshot).then((checkoutMessage) => {
+          const message = `👋 ${checkoutMessage}`
           return Promise.resolve(message)
         })
+      }
+      return db.doCheckIn(visitorSnapshot).then(() => {
+        const message = `✅ Hello, ${visitorSnapshot.data().firstName}`
+        return Promise.resolve(message)
       })
     }).catch(err => console.log(err))
   }

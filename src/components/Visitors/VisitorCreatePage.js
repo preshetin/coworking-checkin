@@ -1,5 +1,6 @@
 import React from 'react'
 import CreateForm from './CreateForm'
+import VisitorSchema from './VisitorSchema'
 import BackButton from '../common/BackButton'
 import VisitorForm from './VisitorForm'
 import { compose } from 'recompose'
@@ -7,7 +8,9 @@ import { withAuthorization, withAuthentication } from '../Session'
 
 const VisitorCreatePage = ({ firebase, history, authUser }) => {
   const handleSubmit = values => {
-    firebase.createVisitor({ ...values, userId: authUser.uid })
+    const castedValues = VisitorSchema.cast(values)
+    console.log('casted values', castedValues)
+    firebase.createVisitor({ ...castedValues, userId: authUser.uid })
       .then(() => history.push('/visitors'))
   }
 
