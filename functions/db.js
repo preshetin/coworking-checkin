@@ -6,7 +6,7 @@ admin.initializeApp({
   databaseURL: 'https://coworking-checkin.firebaseio.com'
 })
 const firestore = admin.firestore()
-const settings = {/* your settings... */ timestampsInSnapshots: true }
+const settings = { timestampsInSnapshots: true }
 firestore.settings(settings)
 const calculateRemainingHours = require('./utils').calculateRemainingHours
 const durationForHumans = require('./utils').durationForHumans
@@ -19,6 +19,38 @@ const db = {
 
   getVisitorById (visitorId) {
     return firestore.collection('visitors').doc(visitorId).get()
+  },
+
+  makeVisitDurationCalculations (visitorSnapshot) {
+    return firestore.collection('visits').doc(visitorSnapshot.data().activeVisitId).get()
+      .then(visitSnapshot => {
+        const endAt = new Date()
+        const end = moment()
+        const startAtSeconds = visitSnapshot.data().startAt.seconds
+        const start = moment(startAtSeconds * 1000)
+        const duration = moment.duration(end.diff(start))
+        const visitLasted = durationForHumans(duration)
+        firestore.collection('visits').doc(visitorSnapshot.data().activeVisitId).set({
+          endAt
+        }, { merge: true })
+        return Promise.resolve({ startAtSeconds, visitLasted })
+      })
+  },
+
+  handleReturningVisitor (visitorSnapshot, hoursAmount, visitLasted) {
+    firestore.collection('visitors').doc(visitorSnapshot.id).set({
+      hoursAmount,
+      activeVisitId: null
+    }, { merge: true })
+    const remainingFormatted = hoursRemainingFormatted(hoursAmount)
+    return `${visitLasted}. ${remainingFormatted} remaining`
+  },
+
+  handleOneTimeVisitor (visitorSnapshot, hoursAmount, visitLasted) {
+    firestore.collection('visitors').doc(visitorSnapshot.id).set({
+      activeVisitId: null
+    }, { merge: true })
+    return `${visitLasted} длился ваш визит. Оплатите на кассе`
   },
 
   doCheckIn (visitorSnapshot) {
@@ -36,29 +68,17 @@ const db = {
   },
 
   doCheckOut (visitorSnapshot) {
-    return firestore.collection('visits').doc(visitorSnapshot.data().activeVisitId).get()
-      .then(visitSnapshot => {
-        const endAt = new Date()
-        const end = moment()
-        const startAtSeconds = visitSnapshot.data().startAt.seconds
-        const start = moment(startAtSeconds * 1000)
-        const duration = moment.duration(end.diff(start))
-        const visitLasted = durationForHumans(duration)
-
-        firestore.collection('visits').doc(visitorSnapshot.data().activeVisitId).set({
-          endAt
-        }, { merge: true })
-        return Promise.resolve({ startAtSeconds, visitLasted })
-      })
+    return this.makeVisitDurationCalculations(visitorSnapshot)
       .then(({ startAtSeconds, visitLasted }) => {
         const hoursRemaining = visitorSnapshot.data().hoursAmount
         const newRemainingHours = calculateRemainingHours(hoursRemaining, startAtSeconds)
-        firestore.collection('visitors').doc(visitorSnapshot.id).set({
-          hoursAmount: newRemainingHours,
-          activeVisitId: null
-        }, { merge: true })
-        const remainingFormatted = hoursRemainingFormatted(newRemainingHours)
-        const resultStr = `${visitLasted}. ${remainingFormatted} remaining`
+
+        let resultStr
+        if (visitorSnapshot.data().hoursAmount) {
+          resultStr = this.handleReturningVisitor(visitorSnapshot, newRemainingHours, visitLasted)
+        } else {
+          resultStr = this.handleOneTimeVisitor(visitorSnapshot, newRemainingHours, visitLasted)
+        }
         return Promise.resolve(resultStr)
       })
       .then(visitLasted => {

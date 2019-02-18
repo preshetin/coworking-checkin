@@ -1,11 +1,13 @@
 import React from 'react'
 import BackButton from '../common/BackButton'
+import VisitorQRCode from './VisitorQRCode'
 import EditForm from './EditForm'
 import { selectVisitor } from '../../reducers/visitors'
 import { setVisitor } from '../../actions/visitorActions'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
 import { withAuthorization, withEmailVerification } from '../Session'
+import './EditPage.css'
 import { withFirebase } from '../Firebase'
 
 class VisitorDetailsPage extends React.Component {
@@ -31,10 +33,13 @@ class VisitorDetailsPage extends React.Component {
 
     return (
       <div className='columns'>
-        <div className='column is-half'>
+        <div className='column no-print is-half'>
           <BackButton />
           <h1 className='title'> {'Edit ' + visitor.firstName} </h1>
           <EditForm id={id} visitor={visitor} />
+        </div>
+        <div className='column'>
+          <VisitorQRCode visitor={{ ...visitor, id }} />
         </div>
       </div>
     )

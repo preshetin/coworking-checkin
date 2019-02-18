@@ -1,0 +1,7 @@
+@media print {
+    .ticket {transform: scale(.4);}
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
+}
