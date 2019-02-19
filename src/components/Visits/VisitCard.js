@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import moment from 'moment'
 import { getHumanReadableDuration } from '../../utils'
 
@@ -14,7 +15,9 @@ const VisitCard = ({ visit }) => {
         <div className='media-content'>
           <div className='content'>
             <p>
-              <strong>{visit.visitorName}</strong>
+              <Link to={`/visitors/${visit.visitorId}`}>
+                {visit.visitorName}
+              </Link>
               <br />
               {getHumanReadableDuration(duration)}
               <br />

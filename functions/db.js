@@ -21,6 +21,22 @@ const db = {
     return firestore.collection('visitors').doc(visitorId).get()
   },
 
+  createVisitor (request) {
+    const newVisitorRef = firestore.collection('visitors').doc()
+    const visitorData = {
+      ...request,
+      createdAt: new Date()
+    }
+    return newVisitorRef.set(visitorData).then(() => {
+      // todo: send email with visitor id barcode
+
+      return {
+        visitorData,
+        visitorId: newVisitorRef.id
+      }
+    })
+  },
+
   makeVisitDurationCalculations (visitorSnapshot) {
     return firestore.collection('visits').doc(visitorSnapshot.data().activeVisitId).get()
       .then(visitSnapshot => {
@@ -43,7 +59,7 @@ const db = {
       activeVisitId: null
     }, { merge: true })
     const remainingFormatted = hoursRemainingFormatted(hoursAmount)
-    return `${visitLasted}. ${remainingFormatted} remaining`
+    return `${visitLasted}. ${remainingFormatted} осталось`
   },
 
   handleOneTimeVisitor (visitorSnapshot, hoursAmount, visitLasted) {
@@ -53,14 +69,15 @@ const db = {
     return `${visitLasted} длился ваш визит. Оплатите на кассе`
   },
 
-  doCheckIn (visitorSnapshot) {
+  doCheckIn (visitorData, visitorId) {
     const newVisitRef = firestore.collection('visits').doc()
     const newVisit = {
       startAt: new Date(),
-      visitorName: visitorSnapshot.data().firstName + ' ' + visitorSnapshot.data().lastName, // todo: set ref to visitor id
-      userId: visitorSnapshot.data().userId
+      visitorName: visitorData.firstName + ' ' + visitorData.lastName, // todo: set ref to visitor id
+      visitorId,
+      userId: visitorData.userId
     }
-    firestore.collection('visitors').doc(visitorSnapshot.id).set({
+    firestore.collection('visitors').doc(visitorId).set({
       activeVisitId: newVisitRef.id
     }, { merge: true })
     newVisitRef.set(newVisit)
@@ -98,7 +115,7 @@ const db = {
           return Promise.resolve(message)
         })
       }
-      return db.doCheckIn(visitorSnapshot).then(() => {
+      return db.doCheckIn(visitorSnapshot.data(), visitorSnapshot.id).then(() => {
         const message = `✅ Hello, ${visitorSnapshot.data().firstName}`
         return Promise.resolve(message)
       })

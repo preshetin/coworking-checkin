@@ -10,3 +10,22 @@ exports.handleQRCode = functions.https.onRequest((request, response) => {
   })
     .catch(err => console.log(err))
 })
+
+exports.createVisitorAndCheckin = functions.https.onRequest((request, responce) => {
+  const visitorRequest = request.body
+  try {
+    return db.createVisitor(visitorRequest).then(({ visitorData, visitorId }) => {
+      return db.doCheckIn(visitorData, visitorId).then(() => {
+        const message = `✅ Добро пожаловать, ${visitorData.firstName}`
+        // const message = `✅ Hello, ${visitorData.firstName}`
+        responce.send({
+          ok: true,
+          message
+        })
+        return Promise.resolve()
+      })
+    })
+  } catch (error) {
+    responce.send({ error })
+  }
+})
