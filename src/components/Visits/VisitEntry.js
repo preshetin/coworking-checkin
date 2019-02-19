@@ -1,4 +1,6 @@
 import React from 'react'
+import CheckoutButton from './CheckoutButton'
+import { Link } from 'react-router-dom'
 import Timer from './Timer'
 
 const VisitEntry = ({ visit, onCheckouting }) => {
@@ -12,6 +14,9 @@ const VisitEntry = ({ visit, onCheckouting }) => {
 
   return (<li style={{ fontSize: '200%' }} key={visit.id}>
     {visit.visitorName} &nbsp;
+    <Link to={`/visitors/${visit.visitorId}`} className='button'>View</Link>
+    &nbsp;
+    <CheckoutButton visitorId={visit.visitorId} />
     |&nbsp;
     <Timer start={new Date(visit.startAt.seconds * 1000)} />
   </li>)

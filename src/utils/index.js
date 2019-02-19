@@ -8,7 +8,9 @@ export const getHumanReadableDuration = duration => {
     return 'less than a minute'
   }
   if (hours === 0) {
+    return `${minutes} min`
     return `${minutes} min ${seconds} sec`
   }
+  return `${hours} h ${minutes} min`
   return `${hours} h ${minutes} min ${seconds} sec`
 }
