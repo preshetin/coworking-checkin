@@ -20,7 +20,11 @@ exports.createVisitorAndCheckin = functions.https.onRequest((request, responce) 
         // const message = `✅ Hello, ${visitorData.firstName}`
         responce.send({
           ok: true,
-          message
+          message,
+          visitor: {
+            ...visitorData,
+            id: visitorId
+          }
         })
         return Promise.resolve()
       })
