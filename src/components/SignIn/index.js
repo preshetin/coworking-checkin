@@ -75,24 +75,24 @@ class SignInFormBase extends Component {
 
     return (
       <form onSubmit={this.onSubmit}>
-        <div class="field">
-          <p class="control has-icons-left">
+        <div className="field">
+          <p className="control has-icons-left">
             <input
               name='email'
-              autofocus="true"
+              autoFocus={true}
               value={email}
               onChange={this.onChange}
               className="input"
               type='email'
               placeholder='Email Address'
             />
-            <span class="icon is-small is-left">
-              <i class="fas fa-envelope"></i>
+            <span className="icon is-small is-left">
+              <i className="fas fa-envelope"></i>
             </span>
           </p>
         </div>
-        <div class="field">
-          <p class="control has-icons-left">
+        <div className="field">
+          <p className="control has-icons-left">
             <input
               name='password'
               className="input"
@@ -101,15 +101,15 @@ class SignInFormBase extends Component {
               type='password'
               placeholder='Password'
             />
-            <span class="icon is-small is-left">
-              <i class="fas fa-lock"></i>
+            <span className="icon is-small is-left">
+              <i className="fas fa-lock"></i>
             </span>
           </p>
         </div>
-        <div class="field">
-          <p class="control">
+        <div className="field">
+          <p className="control">
             <button
-              class="button is-primary" 
+              className="button is-primary" 
               disabled={isInvalid}
               type='submit'
             >
