@@ -25,10 +25,10 @@ const App = () => (
     <div>
       <Navigation />
 
-      <section className='section'>
-        <div className='container'>
           <Switch>
             <Route exact path={ROUTES.LANDING} component={LandingPage} />
+      <section className='section'>
+        <div className='container'>
             <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
             <Route path={ROUTES.SIGN_IN} component={SignInPage} />
             <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
@@ -45,9 +45,9 @@ const App = () => (
             <Route path={ROUTES.MESSAGES} component={MessagesPage} />
             <Route path={ROUTES.ACCOUNT} component={AccountPage} />
             <Route path={ROUTES.ADMIN} component={AdminPage} />
-          </Switch>
         </div>
       </section>
+          </Switch>
 
     </div>
   </Router>

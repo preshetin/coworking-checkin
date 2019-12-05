@@ -9,13 +9,19 @@ import * as ROUTES from '../../constants/routes'
 
 const SignInPage = () => (
   <div>
-    <h1>SignIn</h1>
-    <SignInForm />
-    <SignInGoogle />
-    <SignInFacebook />
-    <SignInTwitter />
-    <PasswordForgetLink />
-    <SignUpLink />
+    <h1 className="title">Sign In</h1>
+    <div className="columns">
+      <div className='column'>
+        <SignInForm />
+      </div> 
+      <div className='column'>
+        <SignInGoogle />
+        <SignInFacebook />
+        <SignInTwitter />
+        <PasswordForgetLink />
+        <SignUpLink />
+      </div> 
+    </div>
   </div>
 )
 
@@ -69,24 +75,48 @@ class SignInFormBase extends Component {
 
     return (
       <form onSubmit={this.onSubmit}>
-        <input
-          name='email'
-          value={email}
-          onChange={this.onChange}
-          type='text'
-          placeholder='Email Address'
-        />
-        <input
-          name='password'
-          value={password}
-          onChange={this.onChange}
-          type='password'
-          placeholder='Password'
-        />
-        <button disabled={isInvalid} type='submit'>
-          Sign In
-        </button>
-
+        <div class="field">
+          <p class="control has-icons-left">
+            <input
+              name='email'
+              autofocus="true"
+              value={email}
+              onChange={this.onChange}
+              className="input"
+              type='email'
+              placeholder='Email Address'
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-envelope"></i>
+            </span>
+          </p>
+        </div>
+        <div class="field">
+          <p class="control has-icons-left">
+            <input
+              name='password'
+              className="input"
+              value={password}
+              onChange={this.onChange}
+              type='password'
+              placeholder='Password'
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-lock"></i>
+            </span>
+          </p>
+        </div>
+        <div class="field">
+          <p class="control">
+            <button
+              class="button is-primary" 
+              disabled={isInvalid}
+              type='submit'
+            >
+              Sign In
+            </button>
+          </p>
+        </div>
         {error && <p>{error.message}</p>}
       </form>
     )
@@ -131,7 +161,7 @@ class SignInGoogleBase extends Component {
 
     return (
       <form onSubmit={this.onSubmit}>
-        <button type='submit'>Sign In with Google</button>
+        <button className='button' type='submit'>Sign In with Google</button>
 
         {error && <p>{error.message}</p>}
       </form>
@@ -177,7 +207,7 @@ class SignInFacebookBase extends Component {
 
     return (
       <form onSubmit={this.onSubmit}>
-        <button type='submit'>Sign In with Facebook</button>
+        <button className='button' type='submit'>Sign In with Facebook</button>
 
         {error && <p>{error.message}</p>}
       </form>
@@ -223,7 +253,7 @@ class SignInTwitterBase extends Component {
 
     return (
       <form onSubmit={this.onSubmit}>
-        <button type='submit'>Sign In with Twitter</button>
+        <button className='button' type='submit'>Sign In with Twitter</button>
 
         {error && <p>{error.message}</p>}
       </form>

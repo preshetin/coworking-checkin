@@ -12,7 +12,7 @@ import * as ROLES from '../../constants/roles'
 const Navigation = ({ authUser }) => {
   const itemsStart = authUser ? (
     <div className='navbar-start'>
-      <Link className='navbar-item' to={ROUTES.VISITORS}>Коворкеры</Link>
+      <Link className='navbar-item' to={ROUTES.VISITORS}>Visitors</Link>
       <Link className='navbar-item' to={ROUTES.ACCOUNT}>Account</Link>
       {authUser.roles.includes(ROLES.ADMIN) && (
         <Link className='navbar-item' to={ROUTES.ADMIN}>Admin</Link>
